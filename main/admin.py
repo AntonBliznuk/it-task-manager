@@ -1,3 +1,8 @@
 from django.contrib import admin
+from main.models import TaskType
 
-# Register your models here.
+
+@admin.register(TaskType)
+class TaskTypeAdmin(admin.ModelAdmin):
+    list_display = ["name", ]
+    search_fields = ["name", ]
