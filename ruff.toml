@@ -1,0 +1,26 @@
+# ruff.toml
+line-length = 100
+target-version = "py313"
+
+select = [
+    "E",   # pycodestyle (PEP8 style issues)
+    "F",   # pyflakes (logical bugs)
+    "I",   # isort (import sorting)
+    "DJ",  # Django-specific rules
+    "UP",  # pyupgrade (Python 3+ syntax improvements)
+]
+
+exclude = [
+    "migrations",
+    "__pycache__",
+    "venv",
+    "env",
+    ".git",
+    ".tox",
+    "node_modules",
+]
+
+fixable = ["ALL"]
+unfixable = []
+
+show-fixes = true
