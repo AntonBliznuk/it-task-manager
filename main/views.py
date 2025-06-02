@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from main.models import Position, Task, TaskType, Worker
+from main.forms import WorkerCreationForm, WorkerPositionUpdateForm
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -62,3 +63,27 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = TaskType
     template_name = "main/task_type_confirm_delete.html"
     success_url = reverse_lazy("main:task-type-list")
+
+
+class WorkerListView(LoginRequiredMixin, generic.ListView):
+    model = Worker
+
+
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Worker
+
+
+class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Worker
+    form_class = WorkerCreationForm
+
+
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Worker
+    form_class = WorkerPositionUpdateForm
+
+
+class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Worker
+    success_url = reverse_lazy("main:worker-list")
+    template_name = "main/worker_confirm_delete.html"
