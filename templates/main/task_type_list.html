@@ -1,4 +1,39 @@
 {% extends "base.html" %}
+
 {% block content %}
-  {{ task_type_list }}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Types of Tasks</h2>
+    <a href="{% url 'main:task-type-create' %}" class="btn btn-primary rounded-pill shadow-sm">+ Add New Type</a>
+</div>
+
+<div class="table-responsive shadow-sm rounded bg-white p-3">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Type Name</th>
+                <th scope="col" class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for type_task in task_type_list %}
+            <tr>
+                <th scope="row">{{ type_task.id }}</th>
+                <td>{{ type_task.name }}</td>
+                <td class="text-end">
+                    <a href="{% url 'main:task-type-update' pk=type_task.id %}" class="btn btn-sm btn-outline-secondary me-2">Edit</a>
+                    <form method="get" action="{% url 'main:task-type-delete' pk=type_task.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center text-muted">No Types of Tasks found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

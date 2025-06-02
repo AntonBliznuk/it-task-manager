@@ -35,3 +35,89 @@ body {
     background-color: #dc3545;
     color: #fff;
 }
+
+.table-hover tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: scale(1.03);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.counter {
+    font-weight: bold;
+}
+
+.hero-section {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-attachment: fixed;
+}
+
+.overlay {
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hero-section .container {
+    z-index: 2;
+}
+
+.card h2 {
+    transition: transform 0.3s ease;
+}
+
+.card:hover h2 {
+    transform: scale(1.1);
+}
+.stat-card {
+    transition: transform 0.2s ease-in-out;
+}
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+.stat-card .icon {
+    transition: transform 0.3s ease;
+}
+.stat-card:hover .icon {
+    transform: rotate(5deg) scale(1.1);
+}
+/* Hover effect on card */
+.stat-card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+.stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Infinite pulse on icons */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
+.infinite-pulse {
+    animation: pulse 2.5s ease-in-out infinite;
+}
+.infinite-pulse.delay-1 {
+    animation-delay: 0.3s;
+}
+.infinite-pulse.delay-2 {
+    animation-delay: 0.6s;
+}
