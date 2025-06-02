@@ -21,6 +21,11 @@ urlpatterns = [
     path("workers/<int:pk>/update/", views.WorkerUpdateView.as_view(), name="worker-update"),
     path("workers/<int:pk>/delete/", views.WorkerDeleteView.as_view(), name="worker-delete"),
 
+    path("tasks/", views.TaskListView.as_view(), name="task-list"),
+    path("tasks/create/", views.TaskCreateView.as_view(), name="task-create"),
+    path("tasks/<int:pk>/detail/", views.TaskDetailView.as_view(), name="task-detail"),
+    path("tasks/<int:pk>/update/", views.TaskUpdateView.as_view(), name="task-update"),
+    path("tasks/<int:pk>/delete/", views.TaskDeleteView.as_view(), name="task-delete"),
 ]
 
 app_name = "main"
