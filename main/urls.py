@@ -14,8 +14,6 @@ urlpatterns = [
     path("task-types/create/", views.TaskTypeCreateView.as_view(), name="task-type-create"),
     path("task-types/<int:pk>/update/", views.TaskTypeUpdateView.as_view(), name="task-type-update"),
     path("task-types/<int:pk>/delete/", views.TaskTypeDeleteView.as_view(), name="task-type-delete"),
-
-
 ]
 
 app_name = "main"
