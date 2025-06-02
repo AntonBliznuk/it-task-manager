@@ -1,10 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse
-from django.views import generic
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views import generic
 
-from main.models import TaskType, Position, Worker, Task
+from main.models import Position, Task, TaskType, Worker
 
 
 def index(request: HttpRequest) -> HttpResponse:
