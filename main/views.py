@@ -1,11 +1,15 @@
+from typing import Any
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
+from django.db.models import Q
 
 from main.models import Position, Task, TaskType, Worker
-from main.forms import WorkerCreationForm, WorkerPositionUpdateForm
+from main.forms import WorkerCreationForm, WorkerPositionUpdateForm, WorkerSearchForm
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -19,7 +23,7 @@ def index(request: HttpRequest) -> HttpResponse:
 
 class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
-    paginate_by = 8
+    paginate_by = 10
 
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
@@ -42,7 +46,7 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     model = TaskType
-    paginate_by = 8
+    paginate_by = 10
     template_name = "main/task_type_list.html"
     context_object_name = "task_type_list"
 
@@ -69,6 +73,26 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super(WorkerListView, self).get_context_data(**kwargs)
+        username_or_position_name = self.request.GET.get("username_or_position_name", "")
+        context["search_form"] = WorkerSearchForm(
+            initial={"username_or_position_name": username_or_position_name}
+        )
+        return context
+    
+    def get_queryset(self) -> QuerySet[Any]:
+        queryset = Worker.objects.select_related("position")
+        form = WorkerSearchForm(self.request.GET)
+        if form.is_valid():
+            search_term = form.cleaned_data["username_or_position_name"]
+            return queryset.filter(
+                Q(username__icontains=search_term) |
+                Q(position__name__icontains=search_term)
+                )
+        return queryset
 
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
@@ -82,6 +106,7 @@ class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
 
 class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
+    success_url = reverse_lazy("main:worker-list")
     form_class = WorkerPositionUpdateForm
 
 

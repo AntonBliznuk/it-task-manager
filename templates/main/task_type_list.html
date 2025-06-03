@@ -4,13 +4,15 @@
 {% block content %}
 <section class="pt-2 pb-3 bg-light">
     <div class="container mt-2">
+        <!-- Header + Button -->
         <div class="d-flex justify-content-between align-items-center mb-3" data-aos="fade-right">
             <h2 class="fw-bold mb-0">Types of Tasks</h2>
             <a href="{% url 'main:task-type-create' %}" class="btn btn-primary rounded-pill shadow-sm">+ Add New Type</a>
         </div>
 
-        <div class="table-responsive shadow-sm rounded bg-white p-2" data-aos="fade-up">
-            <table class="table table-hover align-middle text-center mb-0">
+        <!-- Table (no scroll wrapper) -->
+        <div class="shadow-sm rounded bg-white p-2" data-aos="fade-up">
+            <table class="table table-hover align-middle text-center mb-0 w-100">
                 <thead class="table-light">
                     <tr>
                         <th scope="col">ID</th>
@@ -25,15 +27,12 @@
                         <th scope="row">{{ type_task.id }}</th>
                         <td>{{ type_task.name }}</td>
                         <td>
-                            <span class="text-primary fw-bold fs-5">
-                                {{ type_task.tasks.count }}
-                            </span>
+                            <span class="badge bg-info text-dark">{{ type_task.tasks.count }}</span>
                         </td>
                         <td>
                             <div class="d-flex justify-content-center gap-2">
                                 <a href="{% url 'main:task-type-update' pk=type_task.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
                                 <form method="get" action="{% url 'main:task-type-delete' pk=type_task.id %}" class="d-inline">
-                                    {% csrf_token %}
                                     <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                                 </form>
                             </div>
@@ -48,20 +47,35 @@
             </table>
         </div>
 
-        {% include "includes/pagination.html" %}
+        <!-- Pagination -->
+        <div class="mt-4" data-aos="fade-up">
+            {% include "includes/pagination.html" %}
+        </div>
     </div>
 </section>
 {% endblock %}
 
 {% block extra_js %}
-<!-- AOS -->
+<!-- AOS Animation -->
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
-    AOS.init({
-        duration: 800,
-        easing: 'ease-in-out',
-        once: true
+    document.addEventListener('DOMContentLoaded', function () {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 0,
+            delay: 0,
+            disableMutationObserver: true,
+            startEvent: 'DOMContentLoaded',
+        });
+
+        window.addEventListener('load', () => {
+            document.querySelectorAll('[data-aos]').forEach(el => {
+                el.classList.add('aos-animate');
+            });
+        });
     });
 </script>
 {% endblock %}
