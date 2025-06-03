@@ -1,12 +1,14 @@
 from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 from main.models import Position, Task, TaskType, Worker
 from main.forms import WorkerCreationForm, WorkerPositionUpdateForm, WorkerSearchForm
@@ -23,6 +25,7 @@ def index(request: HttpRequest) -> HttpResponse:
 
 class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
+    queryset = Position.objects.prefetch_related("workers")
     paginate_by = 10
 
 
@@ -47,6 +50,7 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
 class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     model = TaskType
     paginate_by = 10
+    queryset = TaskType.objects.prefetch_related("tasks")
     template_name = "main/task_type_list.html"
     context_object_name = "task_type_list"
 
@@ -84,7 +88,7 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
         return context
     
     def get_queryset(self) -> QuerySet[Any]:
-        queryset = Worker.objects.select_related("position")
+        queryset = Worker.objects.select_related("position").prefetch_related("workers")
         form = WorkerSearchForm(self.request.GET)
         if form.is_valid():
             search_term = form.cleaned_data["username_or_position_name"]
@@ -95,8 +99,20 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
         return queryset
 
 
-class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Worker
+def worker_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
+    worker = get_object_or_404(Worker.objects.prefetch_related("tasks"), pk=pk)
+    assigned_tasks = worker.tasks.all()
+    assigned_tasks_count = assigned_tasks.count()
+    completed_tasks_count = assigned_tasks.filter(is_completed=True).count()
+
+    context = {
+        "worker": worker,
+        "assigned_tasks": assigned_tasks,
+        "assigned_tasks_count": assigned_tasks_count,
+        "completed_tasks_count": completed_tasks_count
+    }
+
+    return render(request, "main/worker_detail.html", context=context)
 
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
