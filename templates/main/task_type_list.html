@@ -1,39 +1,81 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold">Types of Tasks</h2>
-    <a href="{% url 'main:task-type-create' %}" class="btn btn-primary rounded-pill shadow-sm">+ Add New Type</a>
-</div>
+<section class="pt-2 pb-3 bg-light">
+    <div class="container mt-2">
+        <!-- Header + Button -->
+        <div class="d-flex justify-content-between align-items-center mb-3" data-aos="fade-right">
+            <h2 class="fw-bold mb-0">Types of Tasks</h2>
+            <a href="{% url 'main:task-type-create' %}" class="btn btn-primary rounded-pill shadow-sm">+ Add New Type</a>
+        </div>
 
-<div class="table-responsive shadow-sm rounded bg-white p-3">
-    <table class="table table-hover align-middle mb-0">
-        <thead class="table-light">
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Type Name</th>
-                <th scope="col" class="text-end">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for type_task in task_type_list %}
-            <tr>
-                <th scope="row">{{ type_task.id }}</th>
-                <td>{{ type_task.name }}</td>
-                <td class="text-end">
-                    <a href="{% url 'main:task-type-update' pk=type_task.id %}" class="btn btn-sm btn-outline-secondary me-2">Edit</a>
-                    <form method="get" action="{% url 'main:task-type-delete' pk=type_task.id %}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="3" class="text-center text-muted">No Types of Tasks found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+        <!-- Table (no scroll wrapper) -->
+        <div class="shadow-sm rounded bg-white p-2" data-aos="fade-up">
+            <table class="table table-hover align-middle text-center mb-0 w-100">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Type Name</th>
+                        <th scope="col">Number of Tasks</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for type_task in task_type_list %}
+                    <tr data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+                        <th scope="row">{{ type_task.id }}</th>
+                        <td>{{ type_task.name }}</td>
+                        <td>
+                            <span class="badge bg-info text-dark">{{ type_task.tasks.count }}</span>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="{% url 'main:task-type-update' pk=type_task.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <form method="get" action="{% url 'main:task-type-delete' pk=type_task.id %}" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr data-aos="fade-in">
+                        <td colspan="4" class="text-center text-muted">No Types of Tasks found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-4" data-aos="fade-up">
+            {% include "includes/pagination.html" %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<!-- AOS Animation -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 0,
+            delay: 0,
+            disableMutationObserver: true,
+            startEvent: 'DOMContentLoaded',
+        });
+
+        window.addEventListener('load', () => {
+            document.querySelectorAll('[data-aos]').forEach(el => {
+                el.classList.add('aos-animate');
+            });
+        });
+    });
+</script>
 {% endblock %}

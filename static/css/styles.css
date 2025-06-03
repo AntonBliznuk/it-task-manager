@@ -1,6 +1,7 @@
 body {
     background-color: #f8f9fa;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
 }
 
 .nav-link {
@@ -120,4 +121,21 @@ body {
 }
 .infinite-pulse.delay-2 {
     animation-delay: 0.6s;
+}
+.table-hover tbody tr:hover {
+    background-color: #f0f9ff;
+    transition: background-color 0.3s ease;
+}
+
+td .badge {
+    font-size: 0.9rem;
+    padding: 0.5em 0.75em;
+    border-radius: 0.5rem;
+}
+
+table tr:hover {
+  background-color: #f1f9ff;
+}
+input[name="username_or_position_name"] {
+    min-width: 300px;
 }

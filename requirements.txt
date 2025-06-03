@@ -1,7 +1,9 @@
 asgiref==3.8.1
 black==25.1.0
 click==8.2.1
+crispy-bootstrap4==2024.10
 Django==5.2.1
+django-crispy-forms==2.4
 django-debug-toolbar==5.2.0
 mypy_extensions==1.1.0
 packaging==25.0
