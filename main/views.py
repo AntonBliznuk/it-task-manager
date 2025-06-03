@@ -19,6 +19,7 @@ def index(request: HttpRequest) -> HttpResponse:
 
 class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
+    paginate_by = 8
 
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
@@ -41,6 +42,7 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     model = TaskType
+    paginate_by = 8
     template_name = "main/task_type_list.html"
     context_object_name = "task_type_list"
 
