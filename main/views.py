@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from django.utils.timezone import now
 
 from main.models import Position, Task, TaskType, Worker
 from main.forms import WorkerCreationForm, WorkerPositionUpdateForm, WorkerSearchForm
@@ -88,7 +89,7 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
         return context
     
     def get_queryset(self) -> QuerySet[Any]:
-        queryset = Worker.objects.select_related("position").prefetch_related("workers")
+        queryset = Worker.objects.select_related("position").prefetch_related("tasks")
         form = WorkerSearchForm(self.request.GET)
         if form.is_valid():
             search_term = form.cleaned_data["username_or_position_name"]
@@ -109,7 +110,8 @@ def worker_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
         "worker": worker,
         "assigned_tasks": assigned_tasks,
         "assigned_tasks_count": assigned_tasks_count,
-        "completed_tasks_count": completed_tasks_count
+        "completed_tasks_count": completed_tasks_count,
+        "today": now(),
     }
 
     return render(request, "main/worker_detail.html", context=context)

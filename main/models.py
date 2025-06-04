@@ -66,7 +66,7 @@ class Task(models.Model):
         default=Priority.MEDIUM
     )
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE, related_name="tasks")
-    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="workers")
+    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="tasks")
 
     class Meta:
         ordering = ["is_completed", "deadline", "name"]
