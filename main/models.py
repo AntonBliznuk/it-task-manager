@@ -66,7 +66,7 @@ class Task(models.Model):
         default=Priority.MEDIUM
     )
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE, related_name="tasks")
-    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="workers")
+    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="tasks")
 
     class Meta:
         ordering = ["is_completed", "deadline", "name"]
@@ -75,3 +75,6 @@ class Task(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}(type: {self.task_type}, deadline: {self.deadline}, priority: {self.priority}, is_completed: {self.is_completed})"
+    
+    def get_absolute_url(self):
+        return reverse("main:task-detail", args=[str(self.id)])

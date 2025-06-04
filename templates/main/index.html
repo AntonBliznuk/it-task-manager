@@ -2,65 +2,107 @@
 {% load static %}
 
 {% block content %}
-<!-- Hero with Background -->
-<section class="hero-section position-relative text-white text-center py-5" style="background-image: url('https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=1600&q=80'); background-size: cover; background-position: center;">
-    <div class="overlay position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.6);"></div>
-    <div class="container position-relative" data-aos="fade-up">
-        <h1 class="display-4 fw-bold">Welcome to IT Task Manager</h1>
-        <p class="lead mt-3">Manage your team, assign tasks, and streamline productivity — all in one place.</p>
+<!-- Hero Section -->
+<section class="hero-section position-relative text-white text-center py-5" style="
+    background-image: url('https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1600&q=80');
+    background-size: cover;
+    background-position: center;">
+    <div class="overlay position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.7);"></div>
+    <div class="container position-relative py-5" data-aos="zoom-in" data-aos-duration="1200">
+        <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInDown">IT Task Manager</h1>
+        <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+            Open-source project management made simple — designed for developers, and tech startups.
+        </p>
+        <a href="https://github.com/AntonBliznuk/it-task-manager" target="_blank" class="btn btn-gradient-primary btn-lg rounded-pill shadow-lg animate__animated animate__pulse animate__infinite">
+            <i class="bi bi-github me-2"></i> View on GitHub
+        </a>
     </div>
 </section>
 
-<!-- Stats -->
+<!-- About Project -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+                <h2 class="fw-bold mb-4">Built for Developers, by Developer</h2>
+                <p class="text-muted lead">
+                    IT Task Manager is a 100% open-source web application designed to help tech teams organize tasks, manage workers, and track progress with ease.
+                    Whether you’re running a startup, leading a remote team, or coordinating freelance contributors — this platform is fully adaptable to your workflow.
+                    (Well… if you know a bit of Python, of course 😄)
+                </p>
+                <ul class="list-unstyled fs-5 mt-4">
+                    <li class="mb-2"><i class="bi bi-terminal me-2 text-primary"></i> Clean and simple code — easy to modify as you like</li>
+                    <li class="mb-2"><i class="bi bi-pencil-square me-2 text-primary"></i> Fully customizable and self-hostable</li>
+                    <li class="mb-2"><i class="bi bi-person-check-fill me-2 text-primary"></i> Designed for task accountability and transparency</li>
+                </ul>
+            </div>
+            <div class="col-lg-6 text-center" data-aos="fade-left" data-aos-delay="200">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Code Review Illustration"
+                    class="img-fluid shadow-lg rounded-4"
+                    style="max-height: 400px;"
+                    data-aos="zoom-in">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
 <section class="py-5 bg-light">
     <div class="container">
         <div class="row text-center g-4">
-            <!-- Workers -->
-            <div class="col-md-4" data-aos="fade-up">
-                <div class="card border-0 shadow-sm p-4 h-100 stat-card animate__animated animate__fadeInUp">
-                    <div class="icon mb-3 text-primary infinite-pulse">
-                        <i class="bi bi-people-fill display-6"></i>
+            <div class="col-md-4" data-aos="flip-left">
+                <div class="card border-0 shadow p-4 h-100 rounded-4 animate__animated animate__fadeInUp">
+                    <div class="icon mb-3 text-primary fs-1">
+                        <i class="bi bi-people-fill"></i>
                     </div>
-                    <h5 class="text-uppercase text-muted">Workers</h5>
-                    <h2 class="display-5 fw-bold counter text-primary" data-count="{{ num_of_workers }}">0</h2>
+                    <h6 class="text-uppercase text-muted">Workers</h6>
+                    <h2 class="fw-bold text-primary counter" data-count="{{ num_of_workers }}">0</h2>
                 </div>
             </div>
-
-            <!-- Tasks -->
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="card border-0 shadow-sm p-4 h-100 stat-card animate__animated animate__fadeInUp">
-                    <div class="icon mb-3 text-primary infinite-pulse delay-1">
-                        <i class="bi bi-check2-square display-6"></i>
+            <div class="col-md-4" data-aos="flip-up" data-aos-delay="100">
+                <div class="card border-0 shadow p-4 h-100 rounded-4 animate__animated animate__fadeInUp">
+                    <div class="icon mb-3 text-success fs-1">
+                        <i class="bi bi-check2-square"></i>
                     </div>
-                    <h5 class="text-uppercase text-muted">Tasks</h5>
-                    <h2 class="display-5 fw-bold counter text-primary" data-count="{{ num_of_tasks }}">0</h2>
+                    <h6 class="text-uppercase text-muted">Tasks</h6>
+                    <h2 class="fw-bold text-success counter" data-count="{{ num_of_tasks }}">0</h2>
                 </div>
             </div>
-
-            <!-- Positions -->
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="card border-0 shadow-sm p-4 h-100 stat-card animate__animated animate__fadeInUp">
-                    <div class="icon mb-3 text-primary infinite-pulse delay-2">
-                        <i class="bi bi-diagram-3-fill display-6"></i>
+            <div class="col-md-4" data-aos="flip-right" data-aos-delay="200">
+                <div class="card border-0 shadow p-4 h-100 rounded-4 animate__animated animate__fadeInUp">
+                    <div class="icon mb-3 text-info fs-1">
+                        <i class="bi bi-diagram-3-fill"></i>
                     </div>
-                    <h5 class="text-uppercase text-muted">Positions</h5>
-                    <h2 class="display-5 fw-bold counter text-primary" data-count="{{ num_of_positions }}">0</h2>
+                    <h6 class="text-uppercase text-muted">Positions</h6>
+                    <h2 class="fw-bold text-info counter" data-count="{{ num_of_positions }}">0</h2>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-dark text-white text-center" data-aos="zoom-in-up">
+    <div class="container">
+        <h2 class="fw-bold mb-3">Ready to Contribute?</h2>
+        <p class="lead mb-4">Join our open-source community and help shape the future of task management software.</p>
+        <a href="https://github.com/AntonBliznuk/it-task-manager" target="_blank" class="btn btn-outline-light btn-lg rounded-pill">
+            <i class="bi bi-box-arrow-up-right me-2"></i> Contribute Now
+        </a>
+    </div>
+</section>
 {% endblock %}
 
 {% block extra_js %}
-<!-- AOS -->
+<!-- AOS + Animate.css + Counter -->
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
-    AOS.init();
+    AOS.init({ duration: 1000, easing: 'ease-in-out', once: true });
 </script>
 
-<!-- Counter JS -->
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const counters = document.querySelectorAll(".counter");
@@ -69,7 +111,7 @@
             const animate = () => {
                 const target = +counter.getAttribute('data-count');
                 const count = +counter.innerText;
-                const speed = 100; // smaller is faster
+                const speed = 60;
                 const step = Math.ceil(target / speed);
 
                 if (count < target) {
@@ -83,4 +125,15 @@
         });
     });
 </script>
+
+<style>
+    .btn-gradient-primary {
+        background: linear-gradient(to right, #667eea, #764ba2);
+        color: white;
+        border: none;
+    }
+    .btn-gradient-primary:hover {
+        background: linear-gradient(to right, #5a67d8, #6b46c1);
+    }
+</style>
 {% endblock %}
