@@ -100,6 +100,7 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
         return queryset
 
 
+@login_required
 def worker_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
     worker = get_object_or_404(Worker.objects.prefetch_related("tasks"), pk=pk)
     assigned_tasks = worker.tasks.all()
