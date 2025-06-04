@@ -26,3 +26,12 @@ class WorkerSearchForm(forms.Form):
         label="",
         widget=forms.TextInput(attrs={"placeholder": "Search by username or position..."})
     )
+
+
+class TaskSearchForm(forms.Form):
+    name_or_priority = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search by name or priority..."})
+    )

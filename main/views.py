@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
 
 from main.models import Position, Task, TaskType, Worker
-from main.forms import WorkerCreationForm, WorkerPositionUpdateForm, WorkerSearchForm
+from main.forms import WorkerCreationForm, WorkerPositionUpdateForm, WorkerSearchForm, TaskSearchForm
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -138,6 +138,27 @@ class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
+    paginate_by = 15
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super(TaskListView, self).get_context_data(**kwargs)
+        name_or_priority = self.request.GET.get("name_or_priority", "")
+        context["search_form"] = TaskSearchForm(
+            initial={"name_or_priority": name_or_priority}
+        )
+        context["today"] = now()
+        return context
+    
+    def get_queryset(self) -> QuerySet[Any]:
+        queryset = Task.objects.select_related("task_type")
+        form = TaskSearchForm(self.request.GET)
+        if form.is_valid():
+            search_term = form.cleaned_data["name_or_priority"]
+            return queryset.filter(
+                Q(name__icontains=search_term) |
+                Q(priority__icontains=search_term)
+                )
+        return queryset
 
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
