@@ -1,8 +1,100 @@
 {% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+
 {% block content %}
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="submit">
-</form>
+<section class="d-flex align-items-start justify-content-center bg-body-tertiary" style="min-height: 80vh; padding-top: 2rem;">
+  <div class="container py-3">
+    <div class="row justify-content-center align-items-start g-4">
+
+      <!-- Login Form -->
+      <div class="col-lg-6" data-aos="fade-right">
+        <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 480px; margin: auto;">
+          <div class="text-center mb-3">
+            <h2 class="fw-bold display-6 text-primary">Welcome Back</h2>
+            <p class="text-muted">Sign in to manage your tasks efficiently.</p>
+          </div>
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+            {% if form.errors %}
+              <div class="alert alert-danger d-flex align-items-center">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <div>Please correct the errors below.</div>
+              </div>
+            {% endif %}
+
+            <div class="mb-3">
+              {{ form|crispy }}
+            </div>
+
+            <div class="d-grid mb-2">
+              <button type="submit" class="btn btn-gradient-primary btn-lg rounded-pill shadow">
+                <i class="bi bi-box-arrow-in-right me-2"></i> Log In
+              </button>
+            </div>
+
+            <div class="text-center text-muted my-2 small">— OR —</div>
+
+            <div class="d-grid">
+              <a href="#" class="btn btn-outline-dark btn-lg rounded-pill shadow-sm">
+                <i class="bi bi-person-plus me-2"></i> Register New Worker
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Image Section -->
+      <div class="col-lg-6 d-none d-lg-block" data-aos="fade-left">
+        <div class="position-relative h-100 rounded-4 overflow-hidden shadow-lg" style="min-height: 80vh;">
+          <div class="w-100 h-100 position-absolute" style="
+              background: url('https://images.unsplash.com/photo-1531973576160-7125cd663d86?q=80&w=2070&auto=format&fit=crop') center / cover no-repeat;">
+          </div>
+          <div class="position-absolute top-50 start-50 translate-middle text-white text-center px-3 py-2" style="
+              background: rgba(0, 0, 0, 0.45);
+              backdrop-filter: blur(6px);
+              border-radius: 1.5rem;
+              max-width: 480px;">
+            <h4 class="fw-semibold display-6">“Productivity is never an accident.”</h4>
+            <p class="small mt-2 mb-0">Stay focused. Log in. Get things done.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<!-- AOS + Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    AOS.init({ duration: 900, easing: 'ease-in-out', once: true });
+  });
+</script>
+
+<style>
+  .btn-gradient-primary {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+  }
+  .btn-gradient-primary:hover {
+    background: linear-gradient(to right, #5a0eb4, #1c62e7);
+  }
+
+  .bg-body-tertiary {
+    background-color: #f4f7fa !important;
+  }
+
+  .card {
+    background-color: #ffffff;
+    border-radius: 1.5rem;
+  }
+</style>
 {% endblock %}
