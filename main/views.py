@@ -27,7 +27,7 @@ def index(request: HttpRequest) -> HttpResponse:
 class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
     queryset = Position.objects.prefetch_related("workers")
-    paginate_by = 10
+    paginate_by = 13
 
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
@@ -50,7 +50,7 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     model = TaskType
-    paginate_by = 10
+    paginate_by = 13
     queryset = TaskType.objects.prefetch_related("tasks")
     template_name = "main/task_type_list.html"
     context_object_name = "task_type_list"
@@ -78,7 +78,7 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
-    paginate_by = 10
+    paginate_by = 13
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super(WorkerListView, self).get_context_data(**kwargs)
