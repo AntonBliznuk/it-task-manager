@@ -210,6 +210,8 @@ def task_assign_me_view(request: HttpRequest, pk: int) -> HttpResponse:
     return redirect("main:task-detail", pk=pk)
 
 
+@login_required
+@require_POST
 def task_unassign_worker_view(
         request: HttpRequest,
         task_pk: int,
