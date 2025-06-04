@@ -75,3 +75,6 @@ class Task(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}(type: {self.task_type}, deadline: {self.deadline}, priority: {self.priority}, is_completed: {self.is_completed})"
+    
+    def get_absolute_url(self):
+        return reverse("main:task-detail", args=[str(self.id)])

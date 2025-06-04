@@ -54,7 +54,7 @@
                 <tbody class="text-center">
                     {% for worker in worker_list %}
                     <tr data-aos="fade-up">
-                        <td><a href="{% url 'main:worker-detail' pk=worker.id %}" class="text-decoration-none fw-semibold">{{ worker.username }}</a></td>
+                        <td><a href="{% url 'main:worker-detail' pk=worker.id %}" class="text-decoration-none fw-semibold">{{ worker.username }}{% if user.id == worker.id %}(me){% endif %}</a></td>
                         <td>{{ worker.first_name }}</td>
                         <td>{{ worker.last_name }}</td>
                         <td>{{ worker.position.name }}</td>

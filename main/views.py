@@ -2,17 +2,19 @@ from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
+from django.contrib import messages
 
 from main.models import Position, Task, TaskType, Worker
-from main.forms import WorkerCreationForm, WorkerPositionUpdateForm, WorkerSearchForm, TaskSearchForm
+from main.forms import WorkerCreationForm, WorkerPositionUpdateForm, WorkerSearchForm, TaskSearchForm, TaskForm
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -163,18 +165,62 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
-    fields = "__all__"
+    form_class = TaskForm
     success_url = reverse_lazy("main:task-list")
 
 
-class TaskDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Task
+# class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+#     model = Task
+
+
+@login_required
+def task_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
+    task = get_object_or_404(Task.objects.prefetch_related("assignees"), pk=pk)
+    assignees = task.assignees.all()
+
+    context = {
+        "task": task,
+        "assignees": assignees,
+        "today": now(),
+    }
+    return render(request, "main/task_detail.html", context=context)
 
 
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Task
-    fields = "__all__"
-    success_url = reverse_lazy("main:task-list")
+    form_class = TaskForm
+
+
+@login_required
+@require_POST
+def task_complete_view(request: HttpRequest, pk: int) -> HttpResponse:
+    task = get_object_or_404(Task, pk=pk)
+    task.is_completed = True
+    task.save()
+    return redirect("main:task-detail", pk=pk)
+
+
+@login_required
+@require_POST
+def task_assign_me_view(request: HttpRequest, pk: int) -> HttpResponse:
+    task = get_object_or_404(Task.objects.prefetch_related("assignees"), pk=pk)
+    if request.user not in task.assignees.all():
+        task.assignees.add(request.user)
+        task.save()
+    return redirect("main:task-detail", pk=pk)
+
+
+def task_unassign_worker_view(
+        request: HttpRequest,
+        task_pk: int,
+        worker_pk: int
+) -> HttpResponse:
+    task = get_object_or_404(Task.objects.prefetch_related("assignees"), pk=task_pk)
+    worker = task.assignees.filter(id=worker_pk).first()
+    if worker:
+        task.assignees.remove(worker)
+        task.save()
+    return redirect("main:task-detail", pk=task_pk)
 
 
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):

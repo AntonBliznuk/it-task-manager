@@ -84,7 +84,7 @@
               <tr data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
                 <th>{{ task.id }}</th>
                 <td>
-                  <a href="" class="text-decoration-none fw-semibold text-primary">
+                  <a href="{% url 'main:task-detail' pk=task.id %}" class="text-decoration-none fw-semibold text-primary">
                     {{ task.name }}
                   </a>
                 </td>
