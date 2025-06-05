@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils.timezone import now
 
-from main.models import TaskType, Position, Worker, Task
+from main.models import Position, Task, TaskType, Worker
 
 
 class ModelsStrTest(TestCase):
