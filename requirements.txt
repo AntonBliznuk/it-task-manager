@@ -1,6 +1,7 @@
 asgiref==3.8.1
 black==25.1.0
 click==8.2.1
+coverage==7.8.2
 crispy-bootstrap4==2024.10
 Django==5.2.1
 django-crispy-forms==2.4
