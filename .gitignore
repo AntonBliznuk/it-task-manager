@@ -4,3 +4,6 @@ venv/
 .vscode/
 .idea/
 .DS_Store
+.coverage
+.env
+htmlcov/

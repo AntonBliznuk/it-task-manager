@@ -1,20 +1,24 @@
 from typing import Any
 
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views import generic
-from django.db.models import Q
-from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
-from django.contrib import messages
+from django.views import generic
+from django.views.decorators.http import require_POST
 
+from main.forms import (
+    TaskForm,
+    TaskSearchForm,
+    WorkerCreationForm,
+    WorkerPositionUpdateForm,
+    WorkerSearchForm,
+)
 from main.models import Position, Task, TaskType, Worker
-from main.forms import WorkerCreationForm, WorkerPositionUpdateForm, WorkerSearchForm, TaskSearchForm, TaskForm
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -120,7 +124,7 @@ def worker_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
     return render(request, "main/worker_detail.html", context=context)
 
 
-class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+class WorkerCreateView(generic.CreateView):
     model = Worker
     success_url = reverse_lazy("main:worker-list")
     form_class = WorkerCreationForm
