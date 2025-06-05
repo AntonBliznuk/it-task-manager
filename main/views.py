@@ -120,7 +120,7 @@ def worker_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
     return render(request, "main/worker_detail.html", context=context)
 
 
-class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+class WorkerCreateView(generic.CreateView):
     model = Worker
     success_url = reverse_lazy("main:worker-list")
     form_class = WorkerCreationForm
