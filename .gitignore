@@ -5,4 +5,5 @@ venv/
 .idea/
 .DS_Store
 .coverage
+.env
 htmlcov/
