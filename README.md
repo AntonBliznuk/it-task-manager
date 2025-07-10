@@ -65,8 +65,13 @@ python manage.py migrate
 ```bash
 python manage.py runserver
 ```
+## Test user:
+login: test_user
 
-🖼️ Screenshots
+password: test_test123
+
+---
+## 🖼️ Screenshots
 
 ## 👥 Worker List Page
 ![Worker List](screenshots/worker-list.png)
